@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((message) => {
     currentAudio.loop = true; // Make it loop until stopped
     currentAudio.play()
       .then(() => console.log('Playing audio:', message.file))
-      .catch(err => console.error('Audio play failed:', err));
+      .catch(err => console.warn('Audio play failed:', err));
   } else if (message.action === 'stop-audio') {
     if (currentAudio) {
       currentAudio.pause();

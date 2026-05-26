@@ -98,6 +98,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateStats();
     registerEventListeners();
     initTimer(); // Start the timer module
+
+    // Listen for tab activation to refresh domain context
+    chrome.tabs.onActivated.addListener(async () => {
+      if (window.StorageModule) {
+        currentDomain = await window.StorageModule.getCurrentDomain();
+        if (domainTag) domainTag.textContent = currentDomain;
+        tasks = await window.StorageModule.getTasks(currentDomain);
+        renderTasks();
+        updateStats();
+      }
+    });
+
+    // Listen for tab navigation status to refresh domain context dynamically
+    chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+      if (changeInfo.status === 'complete' && tab.active) {
+        if (window.StorageModule) {
+          currentDomain = await window.StorageModule.getCurrentDomain();
+          if (domainTag) domainTag.textContent = currentDomain;
+          tasks = await window.StorageModule.getTasks(currentDomain);
+          renderTasks();
+          updateStats();
+        }
+      }
+    });
   }
 
   // --- Event Listeners ---
@@ -266,6 +290,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // --- Rendering ---
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag)
+    );
+  }
+
   function renderTasks() {
     if (!taskList) return;
     let filtered = tasks.filter(t => {
@@ -286,7 +323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         <li class="task-item ${t.completed ? 'completed' : ''}" data-id="${t.id}">
           <div class="task-checkbox">${t.completed ? '✓' : ''}</div>
           <div class="task-content">
-            <span class="task-text">${t.text}</span>
+            <span class="task-text">${escapeHTML(t.text)}</span>
             <div class="task-meta">
               <span class="badge badge-priority-${t.priority.toLowerCase()}">${t.priority}</span>
               <span class="badge badge-category">${t.category}</span>

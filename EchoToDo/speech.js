@@ -72,14 +72,14 @@ const SpeechModule = {
       };
 
       this.recognition.onerror = (event) => {
-        console.error("Speech Recognition: Error", event.error);
+        console.warn("Speech Recognition: Error", event.error);
         this.isRecording = false;
         onError(event.error);
       };
 
       return true;
     } catch (e) {
-      console.error("Speech Recognition initialization failed:", e);
+      console.warn("Speech Recognition initialization failed:", e);
       return false;
     }
   },
@@ -89,7 +89,7 @@ const SpeechModule = {
     try {
       this.recognition.start();
     } catch (err) {
-      console.error("Speech Recognition: start() failed", err);
+      console.warn("Speech Recognition: start() failed", err);
       this.isRecording = false;
       if (this.recognition.onerror) {
         this.recognition.onerror({ error: 'not-allowed' });
@@ -102,7 +102,7 @@ const SpeechModule = {
       try {
         this.recognition.stop();
       } catch (err) {
-        console.error("Speech Recognition: stop() failed", err);
+        console.warn("Speech Recognition: stop() failed", err);
       }
     }
   }

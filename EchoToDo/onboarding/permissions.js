@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await chrome.storage.local.set({ permissions });
 
         } catch (err) {
-            console.error("Mic denied:", err);
+            console.warn("Mic denied:", err);
             micStatus.textContent = "Denied";
             micStatus.className = "status-badge denied";
         }
