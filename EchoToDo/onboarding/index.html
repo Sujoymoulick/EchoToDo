@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EchoToDo</title>
+    <link rel="stylesheet" href="../popup.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <main class="onboarding-content glass">
+            <!-- Step 1: Welcome -->
+            <section id="step-1" class="step active">
+                <div class="step-icon">👋</div>
+                <h1>Welcome to EchoToDo</h1>
+                <p class="step-desc">Your voice-powered productivity engine. We're excited to help you stay organized and focused.</p>
+                <div class="step-actions">
+                    <button class="btn-primary next-btn" data-next="2">Get Started</button>
+                </div>
+            </section>
+
+            <!-- Step 2: How It Works -->
+            <section id="step-2" class="step">
+                <div class="step-icon">🎙️</div>
+                <h1>How It Works</h1>
+                <ul class="features-list">
+                    <li><span>Privacy:</span> 100% local voice processing.</li>
+                    <li><span>Context:</span> Tasks are saved per website.</li>
+                    <li><span>Focus:</span> Integrated Pomodoro timer.</li>
+                </ul>
+                <div class="step-actions">
+                    <button class="btn-secondary prev-btn" data-prev="1">Back</button>
+                    <button class="btn-primary next-btn" data-next="3">Learn More</button>
+                </div>
+            </section>
+
+            <!-- Step 3: Permissions -->
+            <section id="step-3" class="step">
+                <h1>Setup Permissions</h1>
+                <p class="step-desc">EchoToDo needs a few permissions to work its magic.</p>
+                
+                <div class="permission-cards">
+                    <!-- Mic Card -->
+                    <div class="permission-card glass">
+                        <div class="p-header">
+                            <span class="p-icon">🎙️</span>
+                            <h3>Microphone</h3>
+                        </div>
+                        <p>Required to record and transcribe your voice notes.</p>
+                        <div class="p-actions">
+                            <button id="grant-mic" class="btn-secondary">Grant Access</button>
+                            <span id="mic-status" class="status-badge pending">Pending</span>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Card -->
+                    <div class="permission-card glass">
+                        <div class="p-header">
+                            <span class="p-icon">🔔</span>
+                            <h3>Notifications</h3>
+                        </div>
+                        <p>Optional. Used to alert you when your timer ends.</p>
+                        <div class="p-actions">
+                            <button id="grant-notif" class="btn-secondary">Allow</button>
+                            <span id="notif-status" class="status-badge pending">Pending</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-secondary prev-btn" data-prev="2">Back</button>
+                    <button id="finish-btn" class="btn-primary" disabled>Finish Setup</button>
+                </div>
+            </section>
+
+            <!-- Step 4: Completion -->
+            <section id="step-4" class="step">
+                <div class="step-icon">🚀</div>
+                <h1>You're all set!</h1>
+                <p class="step-desc">EchoToDo is ready to help you conquer your day. Click below to start echoing.</p>
+                <div class="step-actions">
+                    <button id="get-started-btn" class="btn-primary">Go to Dashboard</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="permissions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

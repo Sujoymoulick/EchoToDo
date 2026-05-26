@@ -1,0 +1,159 @@
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--bg-gradient);
+}
+
+.onboarding-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: var(--glass-border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 25%;
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.4s ease;
+}
+
+.onboarding-content {
+    min-height: 450px;
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.step {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+.step.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.step-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+}
+
+.step h1 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.step-desc {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 450px;
+    margin-bottom: 32px;
+}
+
+.features-list {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.features-list li {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.features-list li::before {
+    content: "✓";
+    color: var(--success);
+    font-weight: bold;
+}
+
+.features-list li span {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.step-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Permission Cards */
+.permission-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin: 24px 0 40px 0;
+}
+
+.permission-card {
+    padding: 20px;
+    border-radius: 16px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.p-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.p-icon { font-size: 24px; }
+.p-header h3 { font-size: 1.1rem; }
+
+.permission-card p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.p-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.status-badge.pending { background: var(--glass-border); color: var(--text-dim); }
+.status-badge.granted { background: var(--success); color: white; }
+.status-badge.denied { background: var(--danger); color: white; }

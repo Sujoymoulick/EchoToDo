@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoToDo — Voice to Actionable Tasks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Premium Light Mode Colors */
+            --primary: #5e6ad2;
+            --primary-hover: #4753c4;
+            --primary-focus: rgba(94, 105, 209, 0.2);
+            --ink: #0f1017;
+            --ink-muted: #4a4e57;
+            --ink-subtle: #6c7280;
+            --canvas: #f8f9fa;
+            --surface-1: #ffffff;
+            --surface-2: #f1f3f5;
+            --hairline: rgba(0, 0, 0, 0.08);
+            --hairline-strong: rgba(0, 0, 0, 0.16);
+            
+            /* Spacing */
+            --spacing-section: 96px;
+            --spacing-xl: 32px;
+            --spacing-lg: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--canvas);
+            color: var(--ink);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #0f1017 0%, #343a40 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: clamp(28px, 5vw, 56px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        p.lead {
+            font-size: 20px;
+            color: var(--ink-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            letter-spacing: -0.01em;
+        }
+
+        .eyebrow {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: var(--spacing-section) 0;
+        }
+
+        /* Header */
+        nav {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--hairline);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(94, 106, 210, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--surface-1);
+            color: var(--ink);
+            border: 1px solid var(--hairline);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-2);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding-top: 120px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(94, 106, 210, 0.08) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-visual {
+            margin-top: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.03);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-visual img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Mockup UI Elements (Replicating EchoToDo look in Linear style) */
+        .mockup-ui {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            min-height: 400px;
+        }
+
+        .mockup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mockup-mic-btn {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(94, 106, 210, 0.4);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 20px rgba(94, 106, 210, 0.3); transform: scale(1); }
+            50% { box-shadow: 0 0 40px rgba(94, 106, 210, 0.6); transform: scale(1.05); }
+            100% { box-shadow: 0 0 20px rgba(94, 106, 210, 0.3); transform: scale(1); }
+        }
+
+        .mockup-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .mockup-item {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slide-up 0.5s forwards;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+        }
+
+        @keyframes slide-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mockup-item:nth-child(1) { animation-delay: 0.5s; }
+        .mockup-item:nth-child(2) { animation-delay: 0.7s; }
+        .mockup-item:nth-child(3) { animation-delay: 0.9s; }
+
+        .mockup-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+        }
+
+        .mockup-text {
+            height: 12px;
+            background: var(--hairline-strong);
+            border-radius: 6px;
+            flex: 1;
+        }
+
+        .mockup-text.short { width: 60%; }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.03);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.06);
+        }
+
+        .feature-icon {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card p {
+            color: var(--ink-subtle);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 64px;
+            margin-top: 64px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 40px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            letter-spacing: -0.04em;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--ink-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Domain section */
+        .domain-feature {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            margin-top: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.03);
+        }
+
+        .domain-content {
+            flex: 1;
+            padding: 64px;
+        }
+
+        .domain-visual {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .domain-tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .domain-pill {
+            background: var(--surface-2);
+            border: 1px solid var(--hairline-strong);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--ink-muted);
+        }
+
+        .domain-pill.active {
+            border-color: var(--primary);
+            color: var(--ink);
+        }
+
+        .final-cta-box {
+            background: rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Footer */
+        footer {
+            padding: 64px 0;
+            border-top: 1px solid var(--hairline);
+            text-align: center;
+            color: var(--ink-subtle);
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .social-links a {
+            color: var(--ink-subtle);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-links a:hover {
+            color: var(--ink);
+        }
+
+        @media (max-width: 768px) {
+            .domain-feature {
+                flex-direction: column;
+            }
+            .domain-visual {
+                border-left: none;
+                border-top: 1px solid var(--hairline);
+                width: 100%;
+            }
+            .stats-row {
+                gap: 32px;
+            }
+        }
+
+        /* Animations */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Iridescence Background Styles */
+        #iridescence-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #iridescence-bg canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(248, 249, 250, 0.75) 100%);
+        }
+
+        /* Responsive Improvements for Laptops & Mobile */
+        @media (max-width: 768px) {
+            nav {
+                height: auto;
+                padding: 16px 0;
+            }
+            nav .container {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
+                text-align: center;
+            }
+            nav .btn-secondary {
+                display: none; /* Hide documentation on mobile to save space */
+            }
+            .hero {
+                padding-top: 80px;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                gap: 12px;
+            }
+            .hero-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .mockup-ui {
+                padding: 24px 16px;
+                min-height: auto;
+            }
+            .domain-content {
+                padding: 40px 24px;
+            }
+            .domain-visual {
+                padding: 32px 20px;
+            }
+            .final-cta-box {
+                padding: 48px 24px !important;
+            }
+            .final-cta-box .btn {
+                padding: 12px 24px !important;
+                font-size: 16px !important;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: clamp(32px, 10vw, 48px);
+            }
+            h2 {
+                font-size: clamp(24px, 8vw, 36px);
+            }
+            p.lead {
+                font-size: 16px;
+                margin-bottom: 24px;
+            }
+            section {
+                padding: 64px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Iridescence Animated Background -->
+    <div id="iridescence-bg"></div>
+    <div class="bg-overlay"></div>
+
+    <nav>
+        <div class="container" style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <img src="logo.png" alt="EchoToDo Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+                EchoToDo
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center;">
+                <a href="#" class="btn btn-secondary">Documentation</a>
+                <a href="#" class="btn btn-primary">Download Extension</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero container">
+            <span class="eyebrow" data-reveal>Next Gen Productivity</span>
+            <h1 data-reveal>Speak your tasks into existence.</h1>
+            <p class="lead" data-reveal>
+                The modern Chrome Extension that converts natural voice notes into actionable, domain-specific tasks. No APIs, no cloud, just privacy.
+            </p>
+            <div class="hero-buttons" style="display: flex; gap: 16px; justify-content: center;" data-reveal>
+                <a href="#" class="btn btn-primary" style="padding: 12px 32px; font-size: 16px;">Add to Chrome</a>
+                <a href="https://github.com/Sujoymoulick/EchoToDo.git" target="_blank" class="btn btn-secondary" style="padding: 12px 32px; font-size: 16px;">View Source</a>
+            </div>
+
+            <div class="hero-visual" data-reveal>
+                <div class="mockup-ui">
+                    <img src="logo.png" alt="EchoToDo Logo" style="width: 120px; height: 120px; margin: 0 auto; border-radius: 20px; box-shadow: 0 0 30px rgba(94, 106, 210, 0.25);">
+                    <div style="text-align: center; color: #0f1017; font-weight: 700; font-size: 16px; margin-top: 20px;">"Finish the login page and update the dashboard"</div>
+                    <div class="mockup-list">
+                        <div class="mockup-item">
+                            <div class="mockup-check"></div>
+                            <div class="mockup-text"></div>
+                        </div>
+                        <div class="mockup-item">
+                            <div class="mockup-check"></div>
+                            <div class="mockup-text short"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="container" style="border-top: 1px solid var(--hairline);">
+            <div class="stats-row">
+                <div class="stat" data-reveal>
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Local Processing</span>
+                </div>
+                <div class="stat" data-reveal>
+                    <span class="stat-value">0ms</span>
+                    <span class="stat-label">Cloud Latency</span>
+                </div>
+                <div class="stat" data-reveal>
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">Privacy</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="container">
+            <span class="eyebrow" data-reveal>Features</span>
+            <h2 data-reveal>Engineered for speed.</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice-to-Task System</h3>
+                    <p>Powered by Web Speech API. Speak naturally and watch your thoughts become actionable items instantly.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">🔒</div>
+                    <h3>Privacy by Design</h3>
+                    <p>No OpenAI, no Gemini, no cloud storage. Everything happens right in your browser. Your data never leaves your machine.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">🧠</div>
+                    <h3>Smart Processor</h3>
+                    <p>Rule-based NLP detects priorities, deadlines, and categories automatically. "ASAP" becomes High Priority.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">📊</div>
+                    <h3>Pro Timer</h3>
+                    <p>Stay focused with a detailed productivity timer. Set custom hours, minutes, and seconds for deep work and restorative breaks.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">📁</div>
+                    <h3>Side Panel Support</h3>
+                    <p>Keep your tasks visible with the Chrome Side Panel. Access your to-do list without switching tabs.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-icon">🌐</div>
+                    <h3>Domain Silos</h3>
+                    <p>Tasks are automatically separated by the website you're visiting. Focus on what matters where it matters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Domain Feature Section -->
+        <section class="container">
+            <div class="domain-feature" data-reveal>
+                <div class="domain-content">
+                    <span class="eyebrow">Context Aware</span>
+                    <h2>Domain-specific focus.</h2>
+                    <p style="color: var(--ink-subtle); margin-bottom: 32px;">
+                        EchoToDo understands where you are. Your GitHub tasks stay on GitHub, your YouTube tasks stay on YouTube. Seamless organization without manual sorting.
+                    </p>
+                    <div class="domain-tag-cloud">
+                        <span class="domain-pill active">github.com</span>
+                        <span class="domain-pill">youtube.com</span>
+                        <span class="domain-pill">figma.com</span>
+                        <span class="domain-pill">linear.app</span>
+                        <span class="domain-pill">notion.so</span>
+                    </div>
+                </div>
+                <div class="domain-visual">
+                    <div style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 12px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
+                        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                        </div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--primary); font-weight: 600;">
+                            $ echotodo --list github.com
+                        </div>
+                        <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #0f1017; font-weight: 600; margin-top: 12px; line-height: 1.6;">
+                            ✓ Push login branch [High]<br>
+                            ✓ Update README documentation [Med]<br>
+                            ✓ Fix CSS alignment on mobile [Med]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="container" style="text-align: center;">
+            <div class="final-cta-box" style="border-radius: 24px; padding: 80px 40px;" data-reveal>
+                <h2>Start echoing today.</h2>
+                <p class="lead">Join users who have revolutionized their browsing productivity.</p>
+                <a href="#" class="btn btn-primary" style="padding: 16px 48px; font-size: 18px;">Download for Chrome</a>
+                <p style="margin-top: 24px; font-size: 13px; color: var(--ink-subtle);">Version 1.0 • No Account Required • 100% Free</p>
+            </div>
+        </section>
+    </main>
+<footer>
+    <div class="container">
+        <div class="social-links">
+            <a href="https://github.com/Sujoymoulick/EchoToDo.git" target="_blank">GitHub</a>
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+        <p>© 2026 EchoToDo. Built with passion for privacy and speed.</p>
+    </div>
+</footer>
+
+    <script>
+        // Reveal animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- OGL Iridescence Background WebGL script -->
+    <script type="module">
+        import { Renderer, Program, Mesh, Color, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+
+        const color = [0.7647058823529411, 0.788235294117647, 0.8352941176470589];
+        const speed = 1.0;
+        const amplitude = 0.1;
+        const mouseReact = true;
+
+        const vertexShader = `
+            attribute vec2 uv;
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 0, 1);
+            }
+        `;
+
+        const fragmentShader = `
+            precision highp float;
+            uniform float uTime;
+            uniform vec3 uColor;
+            uniform vec3 uResolution;
+            uniform vec2 uMouse;
+            uniform float uAmplitude;
+            uniform float uSpeed;
+            varying vec2 vUv;
+            void main() {
+                float mr = min(uResolution.x, uResolution.y);
+                vec2 uv = (vUv.xy * 2.0 - 1.0) * uResolution.xy / mr;
+                uv += (uMouse - vec2(0.5)) * uAmplitude;
+                float d = -uTime * 0.5 * uSpeed;
+                float a = 0.0;
+                for (float i = 0.0; i < 8.0; ++i) {
+                    a += cos(i - d - a * uv.x);
+                    d += sin(uv.y * i + a);
+                }
+                d += uTime * 0.5 * uSpeed;
+                vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
+                col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
+                gl_FragColor = vec4(col, 1.0);
+            }
+        `;
+
+        const ctn = document.getElementById('iridescence-bg');
+        if (ctn) {
+            const mousePos = { x: 0.5, y: 0.5 };
+            const renderer = new Renderer({ alpha: true, antialias: true });
+            const gl = renderer.gl;
+            gl.clearColor(0, 0, 0, 0);
+
+            let program;
+
+            function resize() {
+                const scale = window.devicePixelRatio || 1;
+                renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+                gl.canvas.style.width = '100%';
+                gl.canvas.style.height = '100%';
+                if (program) {
+                    program.uniforms.uResolution.value = new Color(
+                        gl.canvas.width,
+                        gl.canvas.height,
+                        gl.canvas.width / gl.canvas.height
+                    );
+                }
+            }
+            window.addEventListener('resize', resize, false);
+            resize();
+
+            const geometry = new Triangle(gl);
+            program = new Program(gl, {
+                vertex: vertexShader,
+                fragment: fragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uColor: { value: new Color(...color) },
+                    uResolution: {
+                        value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+                    },
+                    uMouse: { value: new Float32Array([mousePos.x, mousePos.y]) },
+                    uAmplitude: { value: amplitude },
+                    uSpeed: { value: speed }
+                }
+            });
+
+            const mesh = new Mesh(gl, { geometry, program });
+            let animateId;
+
+            function update(t) {
+                animateId = requestAnimationFrame(update);
+                program.uniforms.uTime.value = t * 0.001;
+                renderer.render({ scene: mesh });
+            }
+            animateId = requestAnimationFrame(update);
+            ctn.appendChild(gl.canvas);
+
+            function handleMouseMove(e) {
+                const rect = ctn.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = 1.0 - (e.clientY - rect.top) / rect.height;
+                mousePos.x = x;
+                mousePos.y = y;
+                program.uniforms.uMouse.value[0] = x;
+                program.uniforms.uMouse.value[1] = y;
+            }
+            if (mouseReact) {
+                window.addEventListener('mousemove', handleMouseMove);
+            }
+        }
+    </script>
+</body>
+</html>

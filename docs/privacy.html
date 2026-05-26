@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoToDo — Privacy Policy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Premium Light Mode Colors */
+            --primary: #5e6ad2;
+            --primary-hover: #4753c4;
+            --primary-focus: rgba(94, 105, 209, 0.2);
+            --ink: #0f1017;
+            --ink-muted: #4a4e57;
+            --ink-subtle: #6c7280;
+            --canvas: #f8f9fa;
+            --surface-1: #ffffff;
+            --surface-2: #f1f3f5;
+            --hairline: rgba(0, 0, 0, 0.08);
+            --hairline-strong: rgba(0, 0, 0, 0.16);
+            
+            /* Spacing */
+            --spacing-section: 96px;
+            --spacing-xl: 32px;
+            --spacing-lg: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--canvas);
+            color: var(--ink);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #0f1017 0%, #343a40 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin: 32px 0 12px;
+            color: var(--ink);
+        }
+
+        p {
+            color: var(--ink-muted);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            color: var(--ink-muted);
+            font-size: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* Header */
+        nav {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--hairline);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+            width: 100%;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: var(--ink);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(94, 106, 210, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Content Card */
+        .content-card {
+            margin-top: 48px;
+            margin-bottom: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.03);
+            flex: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            border-top: 1px solid var(--hairline);
+            text-align: center;
+            color: var(--ink-subtle);
+            font-size: 14px;
+            margin-top: auto;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .social-links a {
+            color: var(--ink-subtle);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-links a:hover {
+            color: var(--ink);
+        }
+
+        /* Backgrounds */
+        #iridescence-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        #iridescence-bg canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, rgba(248, 249, 250, 0.75) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 32px 20px;
+                margin-top: 32px;
+                border-radius: 16px;
+            }
+            nav {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Iridescence Animated Background -->
+    <div id="iridescence-bg"></div>
+    <div class="bg-overlay"></div>
+
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="EchoToDo Logo" style="width: 32px; height: 32px; border-radius: 6px;">
+                EchoToDo
+            </a>
+            <a href="index.html" class="btn btn-primary">Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <article class="content-card">
+            <h1>Privacy Policy</h1>
+            <p>Last updated: May 26, 2026</p>
+            <p>
+                EchoToDo is built with a deep commitment to user privacy. We believe that your thoughts, notes, and productivity data belong to you and should remain completely private. This Privacy Policy details how the EchoToDo Chrome Extension handles data.
+            </p>
+
+            <h2>1. 100% Offline & Local Processing</h2>
+            <p>
+                Unlike traditional voice task applications, EchoToDo processes all speech and task generation entirely on your local machine. 
+            </p>
+            <ul>
+                <li><strong>No Cloud Storage:</strong> Your tasks, categories, and categories are saved directly in your browser's local sandbox storage (`chrome.storage.local`).</li>
+                <li><strong>No External NLP APIs:</strong> EchoToDo employs a robust, client-side, rule-based natural language processor (NLP) to extract metadata (like priorities and tags) from your voice transcripts. No text is sent to third-party AI models or servers.</li>
+                <li><strong>Zero Data Telemetry:</strong> We do not track your usage, clicks, domains visited, or count of tasks created.</li>
+            </ul>
+
+            <h2>2. Extension Permissions & Usage</h2>
+            <p>
+                To provide its core automated features, EchoToDo requests standard browser permissions. We only request the minimum permissions required for operation:
+            </p>
+            <ul>
+                <li><strong>`storage`:</strong> Required to securely save your structured tasks locally in the browser so they persist between sessions.</li>
+                <li><strong>`activeTab` & `tabs`:</strong> Used to detect the active website's domain name (e.g., `github.com` or `figma.com`) in order to automatically silo and display domain-specific checklists. The URL path, search queries, or tab content are never read or stored.</li>
+                <li><strong>`audio` (Microphone access):</strong> Required to capture your voice memos via the native HTML5 Web Speech API for real-time local transcription.</li>
+                <li><strong>`sidePanel`:</strong> Required to display your task checklist side-by-side with your active browser window for seamless productivity.</li>
+                <li><strong>`notifications`:</strong> Used to trigger light user notifications when tasks are successfully added or completed.</li>
+            </ul>
+
+            <h2>3. Web Speech API Integration</h2>
+            <p>
+                Voice transcription is handled through the browser's native `SpeechRecognition` engine. Transcripts are converted to text inside your local browser runtime. At no point are your voice audio files or spoken words captured, saved, or uploaded to our servers.
+            </p>
+
+            <h2>4. Third-Party Services</h2>
+            <p>
+                EchoToDo operates without any backend infrastructure, third-party databases, tracking libraries, or external services. We do not share, sell, or distribute your local data to any third parties because we never have access to it in the first place.
+            </p>
+
+            <h2>5. Open Source Transparency</h2>
+            <p>
+                EchoToDo is open source and completely transparent. You can inspect our code, review the storage handlers, and verify our offline architecture directly in our public repository on GitHub.
+            </p>
+
+            <h2>6. Changes to this Policy</h2>
+            <p>
+                We may update this Privacy Policy from time to time. Any updates will be reflected on this page. Because the extension has no network access capabilities, updates are distributed strictly through the official Chrome Web Store channel.
+            </p>
+
+            <h2>Contact Us</h2>
+            <p>
+                If you have any questions or feedback about our privacy practices, please open an issue on our GitHub repository.
+            </p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Sujoymoulick/EchoToDo.git" target="_blank">GitHub</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <p>© 2026 EchoToDo. Built with passion for privacy and speed.</p>
+        </div>
+    </footer>
+
+    <!-- OGL Iridescence Background WebGL script -->
+    <script type="module">
+        import { Renderer, Program, Mesh, Color, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+
+        const color = [0.7647058823529411, 0.788235294117647, 0.8352941176470589];
+        const speed = 1.0;
+        const amplitude = 0.1;
+        const mouseReact = true;
+
+        const vertexShader = `
+            attribute vec2 uv;
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 0, 1);
+            }
+        `;
+
+        const fragmentShader = `
+            precision highp float;
+            uniform float uTime;
+            uniform vec3 uColor;
+            uniform vec3 uResolution;
+            uniform vec2 uMouse;
+            uniform float uAmplitude;
+            uniform float uSpeed;
+            varying vec2 vUv;
+            void main() {
+                float mr = min(uResolution.x, uResolution.y);
+                vec2 uv = (vUv.xy * 2.0 - 1.0) * uResolution.xy / mr;
+                uv += (uMouse - vec2(0.5)) * uAmplitude;
+                float d = -uTime * 0.5 * uSpeed;
+                float a = 0.0;
+                for (float i = 0.0; i < 8.0; ++i) {
+                    a += cos(i - d - a * uv.x);
+                    d += sin(uv.y * i + a);
+                }
+                d += uTime * 0.5 * uSpeed;
+                vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
+                col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
+                gl_FragColor = vec4(col, 1.0);
+            }
+        `;
+
+        const ctn = document.getElementById('iridescence-bg');
+        if (ctn) {
+            const mousePos = { x: 0.5, y: 0.5 };
+            const renderer = new Renderer({ alpha: true, antialias: true });
+            const gl = renderer.gl;
+            gl.clearColor(0, 0, 0, 0);
+
+            let program;
+
+            function resize() {
+                const scale = window.devicePixelRatio || 1;
+                renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+                gl.canvas.style.width = '100%';
+                gl.canvas.style.height = '100%';
+                if (program) {
+                    program.uniforms.uResolution.value = new Color(
+                        gl.canvas.width,
+                        gl.canvas.height,
+                        gl.canvas.width / gl.canvas.height
+                    );
+                }
+            }
+            window.addEventListener('resize', resize, false);
+            resize();
+
+            const geometry = new Triangle(gl);
+            program = new Program(gl, {
+                vertex: vertexShader,
+                fragment: fragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uColor: { value: new Color(...color) },
+                    uResolution: {
+                        value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+                    },
+                    uMouse: { value: new Float32Array([mousePos.x, mousePos.y]) },
+                    uAmplitude: { value: amplitude },
+                    uSpeed: { value: speed }
+                }
+            });
+
+            const mesh = new Mesh(gl, { geometry, program });
+            let animateId;
+
+            function update(t) {
+                animateId = requestAnimationFrame(update);
+                program.uniforms.uTime.value = t * 0.001;
+                renderer.render({ scene: mesh });
+            }
+            animateId = requestAnimationFrame(update);
+            ctn.appendChild(gl.canvas);
+
+            function handleMouseMove(e) {
+                const rect = ctn.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = 1.0 - (e.clientY - rect.top) / rect.height;
+                mousePos.x = x;
+                mousePos.y = y;
+                program.uniforms.uMouse.value[0] = x;
+                program.uniforms.uMouse.value[1] = y;
+            }
+            if (mouseReact) {
+                window.addEventListener('mousemove', handleMouseMove);
+            }
+        }
+    </script>
+</body>
+</html>

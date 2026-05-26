@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+.gemini/
+*.log
+node_modules/
+dist/
+build/
+.vscode/
+.idea/
+.env

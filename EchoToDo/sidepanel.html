@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EchoToDo Side Panel</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body { width: 100%; height: 100vh; }
+    .app-container { height: 100vh; overflow-y: auto; }
+    .task-list-container { padding-bottom: 80px; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="glass-header">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Logo" style="width: 24px; height: 24px; border-radius: 4px;">
+        <h1>EchoToDo</h1>
+      </div>
+      <a href="https://github.com/Sujoymoulick/EchoToDo.git" target="_blank" class="github-link" title="View Source on GitHub">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 4.238 9.611 9.39 10.823.6.113.82-.258.82-.577 0-.285-.011-1.04-.017-2.042-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C19.765 21.61 24 17.302 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+    </header>
+
+    <main>
+      <!-- Stats Section -->
+      <section class="stats-container glass">
+        <div class="stat-item">
+          <span class="stat-value" id="total-tasks">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="completed-tasks">0</span>
+          <span class="stat-label">Done</span>
+        </div>
+        <div class="stat-progress">
+          <div class="progress-ring">
+            <svg viewBox="0 0 36 36">
+              <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="progress-circle" class="ring-fill" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span class="percentage" id="completion-percent">0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Productivity Timer -->
+      <section class="timer-section glass">
+        <div class="timer-display" id="timer-display">00:25:00</div>
+        <div class="timer-controls">
+          <button id="timer-toggle-btn" class="btn-primary">Start</button>
+          <button id="timer-reset-btn" class="btn-secondary">Reset</button>
+          <button id="stop-sound-btn" class="btn-danger hidden">Stop Sound</button>
+        </div>
+        <div class="timer-modes">
+          <button class="timer-mode-btn active" data-time="1500000" data-mode="focus">Focus</button>
+          <button class="timer-mode-btn" data-time="300000" data-mode="break">Break</button>
+        </div>
+        <div class="custom-timer">
+          <div class="time-input-group">
+            <input type="number" id="custom-hr" min="0" max="23" placeholder="HH">
+            <span>:</span>
+            <input type="number" id="custom-min" min="0" max="59" placeholder="MM">
+            <span>:</span>
+            <input type="number" id="custom-sec" min="0" max="59" placeholder="SS">
+          </div>
+          <button id="set-custom-btn" class="btn-secondary">Set</button>
+        </div>
+      </section>
+
+      <!-- Voice Control -->
+      <section class="voice-section">
+        <button id="mic-btn" class="mic-btn shadow-glow">
+          <div class="mic-inner">
+            <svg id="icon-mic" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+              <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+            <svg id="icon-stop" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+              <rect x="6" y="6" width="12" height="12" rx="2" />
+            </svg>
+          </div>
+          <div class="pulse-ring"></div>
+        </button>
+        <p id="status-text" class="status-idle">Tap to speak tasks</p>
+        <div id="transcript-preview" class="transcript-preview hidden"></div>
+      </section>
+
+      <!-- Filters & Search -->
+      <section class="controls glass">
+        <div class="search-bar">
+          <input type="text" id="task-search" placeholder="Search tasks...">
+        </div>
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pending">Pending</button>
+          <button class="filter-btn" data-filter="completed">Done</button>
+          <button class="filter-btn" data-filter="high">High</button>
+        </div>
+      </section>
+
+      <!-- Task List -->
+      <section class="task-list-container">
+        <div id="empty-state" class="empty-state hidden">
+          <p>No tasks yet. Speak or type one below!</p>
+        </div>
+        <ul id="task-list" class="task-list"></ul>
+      </section>
+    </main>
+
+    <footer class="glass-footer">
+      <button id="add-manual" class="btn-icon" title="Add Manually">➕</button>
+      <button id="export-json" class="btn-icon" title="Export JSON">📥</button>
+    </footer>
+  </div>
+
+  <!-- Manual Add Modal -->
+  <div id="manual-modal" class="modal hidden">
+    <div class="modal-content glass">
+      <h2>Add Task</h2>
+      <input type="text" id="manual-input" placeholder="What needs to be done?">
+      <div class="modal-actions">
+        <button id="cancel-manual" class="btn-secondary">Cancel</button>
+        <button id="save-manual" class="btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Task Modal -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content glass">
+      <h2>Edit Task</h2>
+      <input type="text" id="edit-input" placeholder="Update task text...">
+      <div class="modal-actions">
+        <button id="cancel-edit" class="btn-secondary">Cancel</button>
+        <button id="save-edit" class="btn-primary">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="speech.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>
