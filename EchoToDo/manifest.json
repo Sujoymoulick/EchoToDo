@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "EchoToDo",
   "version": "1.0",
-  "description": "Convert voice notes into actionable tasks locally without external APIs. High privacy, offline-first, and domain-specific task management.",
+  "description": "Local voice-to-task manager with Pro Timer & domain-aware silos. 100% private and offline-first.",
   "offline_enabled": true,
   "permissions": [
     "storage",
